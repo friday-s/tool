@@ -73,6 +73,7 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 
 	public static ArrayList<ImageIcon> iconList;
 	public static JLabel progessLabel;
+
 	public static JLabel stateLabel;
 	public static JLabel replayState;
 
@@ -98,7 +99,6 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 
 		replayFrame = new JFrame();
 		replayFrame.setTitle("Replay");
-
 		initResource();
 		ReplayUtil.countProgress();
 		publish(InitializeView.progressValue);
@@ -115,13 +115,17 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 	}
 
 	private void initJFrame() {
+		ReplayUtil.countProgress();
+		publish(InitializeView.progressValue);
 		replayFrame.setResizable(false);
 		replayFrame.setBackground(Color.gray);
 		ImageIcon icon = new ImageIcon(".\\res\\image\\replay.png");
 		replayFrame.setIconImage(icon.getImage());
 		replayFrame.setBounds(InitializeView.screenWidth / 2 - 599 / 2,
-				InitializeView.screenHeight / 2 - 343, 598, 343);
+				InitializeView.screenHeight / 2 - 343, 598, 380);
 		replayFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		ReplayUtil.countProgress();
+		publish(InitializeView.progressValue);
 		replayFrame.addWindowListener(new WindowListener() {
 
 			@Override
@@ -172,6 +176,8 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 	}
 
 	private void initMenuBar() {
+		ReplayUtil.countProgress();
+		publish(InitializeView.progressValue);
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(SystemColor.ORANGE);
 		replayFrame.setJMenuBar(menuBar);
@@ -218,13 +224,15 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 		btn_del = ReplayUtil.getButton(258, 215, 77, 30, btnStrings[3], this);
 		btn_refresh = ReplayUtil.getButton(258, 250, 77, 30, btnStrings[4],
 				this);
-
+		ReplayUtil.countProgress();
+		publish(InitializeView.progressValue);
 		layeredPane.add(btn_add);
 		layeredPane.add(btn_move_up);
 		layeredPane.add(btn_nmove_down);
 		layeredPane.add(btn_del);
 		layeredPane.add(btn_refresh);
-
+		ReplayUtil.countProgress();
+		publish(InitializeView.progressValue);
 		layeredPane.add(btn_start_record, new Integer(300));
 		layeredPane.add(btn_stop_record, new Integer(200));
 		layeredPane.add(btn_start_replay, new Integer(300));
@@ -233,22 +241,24 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 		publish(InitializeView.progressValue);
 
 		progessLabel = new JLabel("");
-		progessLabel.setBounds(270, 10, 80, 80);
+		progessLabel.setBounds(240, 0, 108, 108);
 		layeredPane.add(progessLabel);
 		ReplayUtil.countProgress();
 		publish(InitializeView.progressValue);
 
 		stateLabel = new JLabel("");
-		stateLabel.setBounds(266, -25, 80, 80);
+		stateLabel.setBounds(264, 15, 80, 80);
 		layeredPane.add(stateLabel);
-
+		ReplayUtil.countProgress();
+		publish(InitializeView.progressValue);
+		
 		replayState = new JLabel("");
 		replayState.setBounds(255, 60, 300, 50);
 		layeredPane.add(replayState);
 		ReplayUtil.countProgress();
 		publish(InitializeView.progressValue);
 
-		file_path = new File(".\\event\\");
+		file_path = new File("event\\");
 		fh = new FileHandler();
 		DataModel dm = new DataModel(fh.getEventsNames(file_path));
 
@@ -281,14 +291,16 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 	}
 
 	private void initResource() {
+		ReplayUtil.countProgress();
+		publish(InitializeView.progressValue);
 		iconList = new ArrayList<ImageIcon>();
-		for (int i = 1; i < 17; i++) {
-			ImageIcon icon = new ImageIcon(".\\res\\image\\ProgressGear" + i
-					+ "_Gray_small@2x.png");
+		for (int i = 1; i < 13; i++) {
+			ImageIcon icon = new ImageIcon("res\\image\\progress_bars" + i
+					+ ".png");
 			ReplayUtil.countProgress();
 			publish(InitializeView.progressValue);
-			icon.setImage(icon.getImage().getScaledInstance(50, 50,
-					Image.SCALE_DEFAULT));
+			// icon.setImage(icon.getImage().getScaledInstance(50, 50,
+			// Image.SCALE_DEFAULT));
 			iconList.add(icon);
 			ReplayUtil.countProgress();
 			publish(InitializeView.progressValue);
@@ -323,6 +335,7 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 			}
 			eh.startRecord(replayFrame, btn_stop_record);
 			new Progress(record_stateStrings).start();
+
 			btn_start_replay.setEnabled(false);
 			return;
 		}
@@ -335,6 +348,7 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 			RunningState.flag = false;
 			stateLabel.setVisible(false);
 			progessLabel.setVisible(false);
+
 			btn_start_replay.setEnabled(true);
 			// display jfilechooser
 			jFileChooser
@@ -362,6 +376,7 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 			eh.startReplay(btn_stop_replay, replayFrame, file_path,
 					transferList.getTotalCell());
 			new Progress(replay_stateStrings).start();
+
 			btn_start_record.setEnabled(false);
 			btn_add.setEnabled(false);
 			btn_move_up.setEnabled(false);
@@ -380,6 +395,7 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 			RunningState.flag = false;
 			stateLabel.setVisible(false);
 			progessLabel.setVisible(false);
+
 			btn_start_record.setEnabled(true);
 			btn_add.setEnabled(true);
 			btn_move_up.setEnabled(true);
@@ -405,6 +421,7 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 					}
 				};
 				DlgProgess.show(replayFrame, thread);
+
 			}
 			return;
 		}
@@ -488,11 +505,14 @@ public class ReplayMain extends SwingWorker<JFrame, Integer> implements
 	@Override
 	protected void done() {
 		// TODO Auto-generated method stub
-		super.done();
-		System.out.println(replayFrame);
-
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		replayFrame.setVisible(true);
-		InitializeView.jFrame.setVisible(false);
+		InitializeView.jFrame.dispose();
 	}
 
 }

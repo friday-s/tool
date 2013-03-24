@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.xue.util.ReplayUtil;
 
@@ -26,7 +27,23 @@ public class InitializeView {
 	public static JFrame jFrame;
 
 	public InitializeView() {
-
+		JFrame.setDefaultLookAndFeelDecorated(false);
+		try {
+			UIManager
+					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		jFrame = new JFrame();
 		getScreenSize();
 		jFrame.setUndecorated(true);
@@ -70,9 +87,7 @@ public class InitializeView {
 			@SuppressWarnings("static-access")
 			public void run() {
 				try {
-					JFrame.setDefaultLookAndFeelDecorated(true);
-					UIManager
-							.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");
+
 					InitializeView window = new InitializeView();
 					 UIManager.LookAndFeelInfo[] looks = UIManager
 					 .getInstalledLookAndFeels();
@@ -80,7 +95,7 @@ public class InitializeView {
 					 System.out.println(look.getClassName());
 					
 					 }
-
+			
 					window.jFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
